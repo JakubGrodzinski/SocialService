@@ -5,10 +5,11 @@ import com.kuba.demo.Model.User;
 import com.kuba.demo.Repository.RoleRepository;
 import com.kuba.demo.Repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.HashSet;
-
+@Service
 public class UserServiceImpl implements UserService
 {
     private final UserRepository userRepository;

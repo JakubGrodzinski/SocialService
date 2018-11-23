@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
@@ -19,7 +20,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 .antMatchers("/admin").hasAnyRole("ADMIN", "SUPERADMIN")
                 .antMatchers("/superadmin").hasRole("SUPERADMIN")
                 .anyRequest().permitAll()
-                .and().formLogin().loginPage("/loginhere")
+                .and().formLogin().loginPage("/loginhere").defaultSuccessUrl("/main")
                 .and().logout().logoutSuccessUrl("/")
                 .permitAll()
                 .and().exceptionHandling().accessDeniedPage("/denied");
@@ -29,5 +30,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
     public MyUserDetailsService customDetailsService ()
     {
         return new MyUserDetailsService();
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder ()
+    {
+        return new BCryptPasswordEncoder();
     }
 }
