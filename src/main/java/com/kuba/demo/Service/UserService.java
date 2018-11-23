@@ -1,4 +1,10 @@
 package com.kuba.demo.Service;
 
-public interface UserService {
+import com.kuba.demo.Model.User;
+
+public interface UserService
+{
+    User findByUsername (String username);
+
+    void saveUser (User user);
 }
