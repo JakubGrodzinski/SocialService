@@ -1,5 +1,6 @@
 package com.kuba.demo.Service;
 
+import com.kuba.demo.Model.CurrentUser;
 import com.kuba.demo.Model.Role;
 import com.kuba.demo.Model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,6 @@ public class MyUserDetailsService implements org.springframework.security.core.u
         {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
+        return new CurrentUser(user.getUsername(),user.getPassword(), grantedAuthorities, user);
     }
 }
