@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class MainController
 {
     @RequestMapping(value = "/main", method = RequestMethod.GET)
-    @ResponseBody
     public String mainPage ()
     {
-        return "hello";
+        return "index";
     }
 }

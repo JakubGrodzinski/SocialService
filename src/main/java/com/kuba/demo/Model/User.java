@@ -1,6 +1,8 @@
 package com.kuba.demo.Model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -13,13 +15,18 @@ public class User
     private Long id;
     @Column(unique = true)
     private String username;
-
     private String password;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
+    //Posty użytkownika
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Post> posts = new ArrayList<>();
+    //Znajomi użytkownika
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<User> friends = new ArrayList<>();
 
     public Long getId() {
         return id;
