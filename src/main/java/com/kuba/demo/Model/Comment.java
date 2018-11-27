@@ -20,4 +20,6 @@ public class Comment
     private List<User> usersWhoLike = new ArrayList<>();
 
     private int numberOfLikes;
+    @ManyToOne
+    private Post post;
 }
