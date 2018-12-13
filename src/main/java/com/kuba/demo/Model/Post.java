@@ -16,7 +16,7 @@ public class Post
     private String text;
 
     private Date creationDate;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
     private List<Comment> comments= new ArrayList<>();
     @ManyToMany(cascade = CascadeType.ALL)
     private List<User> usersWhoLike = new ArrayList<>();
@@ -24,7 +24,6 @@ public class Post
     @ManyToOne
     private User userCreator;
 
-    private int numberOfLikes;
 
     public Long getId() {
         return id;
@@ -66,13 +65,6 @@ public class Post
         this.usersWhoLike = usersWhoLike;
     }
 
-    public int getNumberOfLikes() {
-        return numberOfLikes;
-    }
-
-    public void setNumberOfLikes(int numberOfLikes) {
-        this.numberOfLikes = numberOfLikes;
-    }
 
     public User getUserCreator() {
         return userCreator;

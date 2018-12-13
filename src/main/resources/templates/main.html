@@ -13,7 +13,19 @@
         <input type="submit" value="Post!"/>
     </form>
 
-
-
+    <div th:each="post : ${posts}">
+        <h3 th:text="${post.userCreator.username}"></h3>
+        <h4 th:text="${post.creationDate}"></h4>
+        <span th:text="${post.text}"></span>
+        <div th:each="comment : ${post.comments}">
+            <h5 th:text="${comment.creatorUser.username}"></h5>
+            <h6 th:text="${comment.creationDate}"></h6>
+            <span th:text="${comment.text}"></span>
+        </div>
+        <form th:action="@{'/mai/' + ${post.id}}" th:object="${newComment}" method="post">
+            <input type="text" th:field="*{text}" placeholder="Comment"/>
+            <input type="submit" value="Comment!">
+        </form>
+    </div>
 </body>
 </html>

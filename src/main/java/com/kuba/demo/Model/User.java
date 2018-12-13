@@ -25,8 +25,11 @@ public class User
     @OneToMany(cascade = CascadeType.ALL)
     private List<Post> posts = new ArrayList<>();
     //Znajomi użytkownika
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<User> friends = new ArrayList<>();
+    //Komentarze użytkownika
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
 
     public Long getId() {
         return id;
