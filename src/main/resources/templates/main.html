@@ -6,6 +6,11 @@
 </head>
 <body>
 
+
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Log out"/>
+</form>
+
     <p th:text="Hello +' '+${currentUser.getUsername()}">
 
     <form th:action="@{/main}" th:object="${newPost}" method="post">
@@ -16,11 +21,13 @@
     <div th:each="post : ${posts}">
         <h3 th:text="${post.userCreator.username}"></h3>
         <h4 th:text="${post.creationDate}"></h4>
-        <span th:text="${post.text}"></span>
-        <div th:each="comment : ${post.comments}">
+        <p th:text="${post.text}"></p>
+        <div th:each="comment : ${comments}">
+            <span th:if="${comment.post} == ${post}">
             <h5 th:text="${comment.creatorUser.username}"></h5>
             <h6 th:text="${comment.creationDate}"></h6>
-            <span th:text="${comment.text}"></span>
+            <p th:text="${comment.text}"></p>
+            </span>
         </div>
         <form th:action="@{'/mai/' + ${post.id}}" th:object="${newComment}" method="post">
             <input type="text" th:field="*{text}" placeholder="Comment"/>

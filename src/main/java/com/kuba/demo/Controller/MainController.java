@@ -77,7 +77,13 @@ public class MainController
     @ModelAttribute("posts")
     public List<Post> getAllPosts ()
     {
-        return postRepository.findAll();
+        return postRepository.getOrderedPosts();
+    }
+
+    @ModelAttribute("comments")
+    public List<Comment> getAllComments ()
+    {
+        return commentRepository.getOrderedComments();
     }
 
 }
