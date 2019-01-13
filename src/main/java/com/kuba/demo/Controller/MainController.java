@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -54,7 +56,7 @@ public class MainController
         return "redirect:/main";
     }
 
-    @RequestMapping(value = "/mai", method = RequestMethod.GET)
+    @RequestMapping(value = "/mai/**", method = RequestMethod.GET)
     public String redirectFromMai ()
     {
         return "redirect:/main";
@@ -77,13 +79,9 @@ public class MainController
     @ModelAttribute("posts")
     public List<Post> getAllPosts ()
     {
-        return postRepository.getOrderedPosts();
+        List<Post> posts = postRepository.getOrderedPosts();
+        return posts;
     }
 
-    @ModelAttribute("comments")
-    public List<Comment> getAllComments ()
-    {
-        return commentRepository.getOrderedComments();
-    }
 
 }
