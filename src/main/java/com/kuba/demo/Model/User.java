@@ -30,6 +30,12 @@ public class User
     //Komentarze użytkownika
     @OneToMany(cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
+    //Ci, których chce poznać użytkownik
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<User> wantedByUser = new ArrayList<>();
+    //Ci, którzy chcą poznać użytkownika
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<User> userIsWanted = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -61,6 +67,46 @@ public class User
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
+    public List<User> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(List<User> friends) {
+        this.friends = friends;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public List<User> getWantedByUser() {
+        return wantedByUser;
+    }
+
+    public void setWantedByUser(List<User> wantedByUser) {
+        this.wantedByUser = wantedByUser;
+    }
+
+    public List<User> getUserIsWanted() {
+        return userIsWanted;
+    }
+
+    public void setUserIsWanted(List<User> userIsWanted) {
+        this.userIsWanted = userIsWanted;
     }
 
     public User(String username, String password, Set<Role> roles)

@@ -13,7 +13,7 @@
     </form>
 
     <div th:each="names : ${searchedNames}">
-        <h4 th:text="${names.username}"></h4>
+        <a th:href="@{'/user/' + ${names.id}}"><h4 th:text="${names.username}"></h4></a>
     </div>
 
 </body>
