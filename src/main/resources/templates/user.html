@@ -5,8 +5,8 @@
     <title>Title</title>
 </head>
 <body>
-    <p th:text="Hello +' '+${current.getUsername()}">
+    <p th:text="|Hello ${current.getUsername()}|">
     <br/>
-    <p th:text="Hello +' '+${chosenUser.getUsername()}">
+    <p th:text="|This is ${chosenUser.getUsername()} profile|">
 </body>
 </html>
