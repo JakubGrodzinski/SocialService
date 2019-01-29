@@ -8,6 +8,7 @@ import com.kuba.demo.Repository.CommentRepository;
 import com.kuba.demo.Repository.PostRepository;
 import com.kuba.demo.Repository.UserRepository;
 import com.kuba.demo.Service.MyUserDetailsService;
+import com.kuba.demo.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +32,8 @@ public class MainController
     UserRepository userRepository;
     @Autowired
     CommentRepository commentRepository;
+    @Autowired
+    UserService userService;
 
 
     @RequestMapping(value = "/main", method = RequestMethod.GET)
@@ -46,12 +49,10 @@ public class MainController
         return "main";
     }
     @RequestMapping(value = "/main", method = RequestMethod.POST)
-    public String postPost (@ModelAttribute("newPost") Post post, HttpSession session)
+    public String postPost (@ModelAttribute("newPost") Post post, HttpSession session, Principal principal)
     {
         post.setCreationDate(new Date());
-        User user = (User)session.getAttribute("currentUser");
-        User notDetached = userRepository.findByUsername(user.getUsername());
-        post.setUserCreator(notDetached);
+        post.setUserCreator(userService.getLoggedDbUser(session, principal));
         postRepository.save(post);
         return "redirect:/main";
     }
@@ -63,12 +64,10 @@ public class MainController
     }
 
     @RequestMapping(value = "/mai/{postId}", method = RequestMethod.POST)
-    public String postComment (@ModelAttribute("newComment") Comment comment, @PathVariable("postId") Long postId, HttpSession session)
+    public String postComment (@ModelAttribute("newComment") Comment comment, @PathVariable("postId") Long postId, HttpSession session, Principal principal)
     {
         comment.setCreationDate(new Date());
-        User user = (User)session.getAttribute("currentUser");
-        User notDetached = userRepository.findByUsername(user.getUsername());
-        comment.setCreatorUser(notDetached);
+        comment.setCreatorUser(userService.getLoggedDbUser(session, principal));
         comment.setPost(postRepository.getOne(postId));
         commentRepository.save(comment);
         return "redirect:/main";

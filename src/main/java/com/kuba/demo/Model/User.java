@@ -22,7 +22,7 @@ public class User
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
     //Posty użytkownika
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userCreator")
     private List<Post> posts = new ArrayList<>();
     //Znajomi użytkownika
     @ManyToMany(cascade = CascadeType.ALL)

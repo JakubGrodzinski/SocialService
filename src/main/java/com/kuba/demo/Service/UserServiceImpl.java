@@ -4,12 +4,16 @@ import com.kuba.demo.Model.Role;
 import com.kuba.demo.Model.User;
 import com.kuba.demo.Repository.RoleRepository;
 import com.kuba.demo.Repository.UserRepository;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.HashSet;
 @Service
+@Primary
 public class UserServiceImpl implements UserService
 {
     private final UserRepository userRepository;
@@ -38,5 +42,14 @@ public class UserServiceImpl implements UserService
         userRepository.save(user);
     }
 
-
+    @Override
+    public User getLoggedDbUser(HttpSession session, Principal principal)
+    {
+        User currentUser = (User)session.getAttribute("currentUser");
+        if(currentUser == null)
+        {
+            currentUser = userRepository.findByUsername(principal.getName());
+        }
+        return userRepository.getOne(currentUser.getId());
+    }
 }

@@ -21,12 +21,12 @@
     </form>
 
     <div th:each="post : ${posts}">
-        <h3 th:text="${post.userCreator.username}"></h3>
-        <h4 th:text="${post.creationDate}"></h4>
+        <a th:text="${post.userCreator.username}" th:href="@{'/user/' + ${post.userCreator.id}}"></a>
+        <h4 th:text="${#dates.format(post.creationDate, 'dd MMMM yyyy HH:mm')}"></h4>
         <p th:text="${post.text}"></p>
         <div th:each="comment : ${post.comments}">
-            <h5 th:text="${comment.creatorUser.username}"></h5>
-            <h6 th:text="${comment.creationDate}"></h6>
+            <a th:text="${comment.creatorUser.username}" th:href="@{'/user/' + ${comment.creatorUser.id}}"></a>
+            <h6 th:text="${#dates.format(comment.creationDate, 'dd MMMM yyyy HH:mm')}"></h6>
             <p th:text="${comment.text}"></p>
         </div>
         <form th:action="@{'/mai/' + ${post.id}}" th:object="${newComment}" method="post">

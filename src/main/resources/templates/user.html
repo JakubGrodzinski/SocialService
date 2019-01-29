@@ -5,8 +5,33 @@
     <title>Title</title>
 </head>
 <body>
-    <p th:text="|Hello ${current.getUsername()}|">
-    <br/>
-    <p th:text="|This is ${chosenUser.getUsername()} profile|">
+
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Log out"/>
+</form>
+<p th:text="|Hello ${current.getUsername()}|"></p>
+
+<p th:unless="${current.id.equals(chosenUser.id)}" th:text="|This is ${chosenUser.getUsername()} profile|"></p>
+
+
+<p th:if="${current.id.equals(chosenUser.id)}">
+    This is your profile
+</p>
+
+<p th:if="${current.wantedByUser.contains(chosenUser)}" th:text="Invitation already sent">
+</p>
+
+<div th:if="${current.userIsWanted.contains(chosenUser)}">
+    <p th:text="|Do you want to accept the ${chosenUser.username} invitation'?'|"></p>
+</div>
+
+<form th:unless="${current.id.equals(chosenUser.id)} or ${current.wantedByUser.contains(chosenUser)} or ${current.userIsWanted.contains(chosenUser)}">
+    <input type="submit" value="Add to friends"/>
+</form>
+
+    <div th:each="post : ${chosenPosts}">
+        <h4 th:text="${#dates.format(post.creationDate, 'dd MMMM yyyy HH:mm')}"></h4>
+        <p th:text="${post.text}"></p>
+    </div>
 </body>
 </html>
