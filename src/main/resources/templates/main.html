@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/css/style.css}">
 </head>
 <body>
 
@@ -20,7 +22,7 @@
         <input type="submit" value="Post!"/>
     </form>
 
-    <div th:each="post : ${posts}">
+    <div th:each="post : ${posts}" class="post">
         <a th:text="${post.userCreator.username}" th:href="@{'/user/' + ${post.userCreator.id}}"></a>
         <h4 th:text="${#dates.format(post.creationDate, 'dd MMMM yyyy HH:mm')}"></h4>
         <p th:text="${post.text}"></p>

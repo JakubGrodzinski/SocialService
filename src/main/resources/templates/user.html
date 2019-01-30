@@ -18,14 +18,19 @@
     This is your profile
 </p>
 
-<p th:if="${current.wantedByUser.contains(chosenUser)}" th:text="Invitation already sent">
+<p th:if="${current.wantedByUser.contains(chosenUser)}">
+    Invitation already sent
 </p>
 
-<div th:if="${current.userIsWanted.contains(chosenUser)}">
-    <p th:text="|Do you want to accept the ${chosenUser.username} invitation'?'|"></p>
-</div>
+<form th:if="${current.userIsWanted.contains(chosenUser)}" th:action="@{'/user/userAccept/' + ${chosenUser.id}}" method="post">
+    <input type="submit" value="Accept">
+</form>
 
-<form th:unless="${current.id.equals(chosenUser.id)} or ${current.wantedByUser.contains(chosenUser)} or ${current.userIsWanted.contains(chosenUser)}">
+<form th:if="${current.userIsWanted.contains(chosenUser)}" th:action="@{'/user/userDecline/' + ${chosenUser.id}}" method="post">
+    <input type="submit" value="Decline">
+</form>
+
+<form th:unless="${current.id.equals(chosenUser.id)} or ${current.wantedByUser.contains(chosenUser)} or ${current.userIsWanted.contains(chosenUser)}" method="post" th:action="@{'/user/' + ${chosenUser.id}}">
     <input type="submit" value="Add to friends"/>
 </form>
 

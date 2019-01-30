@@ -2,6 +2,7 @@ package com.kuba.demo.Model;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -85,6 +86,11 @@ public class User
         this.friends = friends;
     }
 
+    public void addToFriends (User user)
+    {
+        this.friends.add(user);
+    }
+
     public List<Comment> getComments() {
         return comments;
     }
@@ -107,6 +113,39 @@ public class User
 
     public void setUserIsWanted(List<User> userIsWanted) {
         this.userIsWanted = userIsWanted;
+    }
+
+    public void addToWantedByUser (User user)
+    {
+        this.wantedByUser.add(user);
+    }
+    public void removerFromWantedByUser (User user)
+    {
+        Iterator<User> userIterator = this.wantedByUser.iterator();
+        while (userIterator.hasNext())
+        {
+            User tmpUser = userIterator.next();
+            if(tmpUser.getId().equals(user.getId()))
+            {
+                userIterator.remove();
+            }
+        }
+    }
+    public void addToUserIsWanted (User user)
+    {
+        this.userIsWanted.add(user);
+    }
+    public void removerFromUserIsWanted (User user)
+    {
+        Iterator<User> userIterator = this.wantedByUser.iterator();
+        while (userIterator.hasNext())
+        {
+            User tmpUser = userIterator.next();
+            if(tmpUser.getId().equals(user.getId()))
+            {
+                userIterator.remove();
+            }
+        }
     }
 
     public User(String username, String password, Set<Role> roles)

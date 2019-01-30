@@ -1,0 +1,7 @@
+.post
+{
+    border: 1px darkturquoise solid;
+    width: 300px;
+    max-width: 100%;
+    border-radius: 4%;
+}
