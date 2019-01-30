@@ -30,9 +30,13 @@
     <input type="submit" value="Decline">
 </form>
 
-<form th:unless="${current.id.equals(chosenUser.id)} or ${current.wantedByUser.contains(chosenUser)} or ${current.userIsWanted.contains(chosenUser)}" method="post" th:action="@{'/user/' + ${chosenUser.id}}">
+<form th:unless="${current.id.equals(chosenUser.id)} or ${current.wantedByUser.contains(chosenUser)} or ${current.userIsWanted.contains(chosenUser)} or ${current.friends.contains(chosenUser)}" method="post" th:action="@{'/user/' + ${chosenUser.id}}">
     <input type="submit" value="Add to friends"/>
 </form>
+
+<p th:if="${current.friends.contains(chosenUser)}">
+    This is your friend
+</p>
 
     <div th:each="post : ${chosenPosts}">
         <h4 th:text="${#dates.format(post.creationDate, 'dd MMMM yyyy HH:mm')}"></h4>

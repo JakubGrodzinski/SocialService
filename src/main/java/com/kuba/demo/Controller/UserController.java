@@ -76,7 +76,11 @@ public class UserController
         User userDeciding = userService.getLoggedDbUser(session, principal);
         User userWanting = userRepository.getOne(userId);
         userDeciding.addToFriends(userWanting);
+        userDeciding.removerFromUserIsWanted(userWanting);
         userWanting.addToFriends(userDeciding);
-
+        userWanting.removeFromWantedByUser(userDeciding);
+        userRepository.save(userDeciding);
+        userRepository.save(userWanting);
+        return "redirect:/user/" + userId;
     }
 }

@@ -91,6 +91,19 @@ public class User
         this.friends.add(user);
     }
 
+    public void removeFromFriends (User user)
+    {
+        Iterator<User> userIterator = this.friends.iterator();
+        while (userIterator.hasNext())
+        {
+            User tmpUser = userIterator.next();
+            if(tmpUser.getId().equals(user.getId()))
+            {
+                userIterator.remove();
+            }
+        }
+    }
+
     public List<Comment> getComments() {
         return comments;
     }
@@ -119,7 +132,7 @@ public class User
     {
         this.wantedByUser.add(user);
     }
-    public void removerFromWantedByUser (User user)
+    public void removeFromWantedByUser (User user)
     {
         Iterator<User> userIterator = this.wantedByUser.iterator();
         while (userIterator.hasNext())
@@ -137,7 +150,7 @@ public class User
     }
     public void removerFromUserIsWanted (User user)
     {
-        Iterator<User> userIterator = this.wantedByUser.iterator();
+        Iterator<User> userIterator = this.userIsWanted.iterator();
         while (userIterator.hasNext())
         {
             User tmpUser = userIterator.next();
