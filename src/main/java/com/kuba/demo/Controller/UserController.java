@@ -51,10 +51,7 @@ public class UserController {
     public String sendInvitation(@PathVariable("userId") Long userId, HttpSession session, Principal principal) {
         User userWanting = userService.getLoggedDbUser(session, principal);
         User userWanted = userRepository.getOne(userId);
-        userWanting.addToWantedByUser(userWanted);
-        userWanted.addToUserIsWanted(userWanting);
-        userRepository.save(userWanting);
-        userRepository.save(userWanted);
+        userService.sendInvitationService(userWanting, userWanted);
         return "redirect:/user/" + userId;
     }
 
@@ -67,12 +64,7 @@ public class UserController {
     public String acceptInvitation(@PathVariable("userId") Long userId, HttpSession session, Principal principal) {
         User userDeciding = userService.getLoggedDbUser(session, principal);
         User userWanting = userRepository.getOne(userId);
-        userDeciding.addToFriends(userWanting);
-        userDeciding.removerFromUserIsWanted(userWanting);
-        userWanting.addToFriends(userDeciding);
-        userWanting.removeFromWantedByUser(userDeciding);
-        userRepository.save(userDeciding);
-        userRepository.save(userWanting);
+        userService.acceptInvitationService(userDeciding, userWanting);
         return "redirect:/user/" + userId;
     }
 
@@ -87,10 +79,7 @@ public class UserController {
     {
         User userDeciding = userService.getLoggedDbUser(session, principal);
         User userWanting = userRepository.getOne(userId);
-        userDeciding.removerFromUserIsWanted(userWanting);
-        userWanting.removeFromWantedByUser(userDeciding);
-        userRepository.save(userDeciding);
-        userRepository.save(userWanting);
+        userService.declineInvitationService(userDeciding, userWanting);
         return "redirect:/user/" + userId;
     }
 
@@ -105,10 +94,7 @@ public class UserController {
     {
         User userDeciding = userService.getLoggedDbUser(session, principal);
         User userBeingRemoved = userRepository.getOne(userId);
-        userDeciding.removeFromFriends(userBeingRemoved);
-        userBeingRemoved.removeFromFriends(userDeciding);
-        userRepository.save(userDeciding);
-        userRepository.save(userBeingRemoved);
+        userService.removeFromFriendsService(userDeciding, userBeingRemoved);
         return "redirect:/user/" + userId;
     }
 }

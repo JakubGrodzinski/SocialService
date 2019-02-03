@@ -13,4 +13,12 @@ public interface UserService
     void saveUser (User user);
 
     User getLoggedDbUser (HttpSession session, Principal principal);
+
+    void sendInvitationService (User userWanting, User userWanted);
+
+    void acceptInvitationService (User userDeciding, User userWanting);
+
+    void declineInvitationService (User userDeciding, User userWanting);
+
+    void removeFromFriendsService (User userDeciding, User userBeingRemoved);
 }

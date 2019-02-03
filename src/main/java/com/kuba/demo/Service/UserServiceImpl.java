@@ -52,4 +52,42 @@ public class UserServiceImpl implements UserService
         }
         return userRepository.getOne(currentUser.getId());
     }
+
+    @Override
+    public void sendInvitationService(User userWanting, User userWanted)
+    {
+        userWanting.addToWantedByUser(userWanted);
+        userWanted.addToUserIsWanted(userWanting);
+        userRepository.save(userWanting);
+        userRepository.save(userWanted);
+    }
+
+    @Override
+    public void acceptInvitationService(User userDeciding, User userWanting)
+    {
+        userDeciding.addToFriends(userWanting);
+        userDeciding.removerFromUserIsWanted(userWanting);
+        userWanting.addToFriends(userDeciding);
+        userWanting.removeFromWantedByUser(userDeciding);
+        userRepository.save(userDeciding);
+        userRepository.save(userWanting);
+    }
+
+    @Override
+    public void declineInvitationService(User userDeciding, User userWanting)
+    {
+        userDeciding.removerFromUserIsWanted(userWanting);
+        userWanting.removeFromWantedByUser(userDeciding);
+        userRepository.save(userDeciding);
+        userRepository.save(userWanting);
+    }
+
+    @Override
+    public void removeFromFriendsService(User userDeciding, User userBeingRemoved)
+    {
+        userDeciding.removeFromFriends(userBeingRemoved);
+        userBeingRemoved.removeFromFriends(userDeciding);
+        userRepository.save(userDeciding);
+        userRepository.save(userBeingRemoved);
+    }
 }
