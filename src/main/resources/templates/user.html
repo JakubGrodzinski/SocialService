@@ -38,6 +38,10 @@
     This is your friend
 </p>
 
+<form th:if="${current.friends.contains(chosenUser)}" th:action="@{'/user/userRemoveFromFriends/' + ${chosenUser.id}}" method="post">
+    <input type="submit" value="Remove from friends">
+</form>
+
     <div th:each="post : ${chosenPosts}">
         <h4 th:text="${#dates.format(post.creationDate, 'dd MMMM yyyy HH:mm')}"></h4>
         <p th:text="${post.text}"></p>

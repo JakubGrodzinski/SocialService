@@ -24,7 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 .antMatchers("/superadmin").hasRole("SUPERADMIN")
                 .anyRequest().permitAll()
                 .and().formLogin().loginPage("/loginhere").defaultSuccessUrl("/main")
-                .and().logout().logoutSuccessUrl("/")
+                .and().logout().logoutSuccessUrl("/loginhere")
                 .permitAll()
                 .and().exceptionHandling().accessDeniedPage("/denied");
     }

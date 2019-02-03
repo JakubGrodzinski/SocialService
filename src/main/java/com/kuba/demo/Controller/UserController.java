@@ -22,8 +22,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/user")
-public class UserController
-{
+public class UserController {
     @Autowired
     UserRepository userRepository;
 
@@ -31,18 +30,14 @@ public class UserController
     UserService userService;
 
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
-    public String showProfile(Model model, @PathVariable("userId") Long userId, HttpSession session, Principal principal)
-    {
-        try
-        {
+    public String showProfile(Model model, @PathVariable("userId") Long userId, HttpSession session, Principal principal) {
+        try {
             User user = userRepository.getOne(userId);
             model.addAttribute("chosenUser", user);
             List<Post> posts = user.getPosts();
             Collections.sort(posts, ((o1, o2) -> o2.getCreationDate().compareTo(o1.getCreationDate())));
             model.addAttribute("chosenPosts", posts);
-        }
-        catch (EntityNotFoundException e)
-        {
+        } catch (EntityNotFoundException e) {
             e.printStackTrace();
             return "redirect:/main";
         }
@@ -53,8 +48,7 @@ public class UserController
     }
 
     @RequestMapping(value = "/{userId}", method = RequestMethod.POST)
-    public String sendInvitation (@PathVariable("userId") Long userId, HttpSession session, Principal principal)
-    {
+    public String sendInvitation(@PathVariable("userId") Long userId, HttpSession session, Principal principal) {
         User userWanting = userService.getLoggedDbUser(session, principal);
         User userWanted = userRepository.getOne(userId);
         userWanting.addToWantedByUser(userWanted);
@@ -64,15 +58,13 @@ public class UserController
         return "redirect:/user/" + userId;
     }
 
-    @RequestMapping(value = "/userAccept/{userId}", method = RequestMethod.GET)
-    public String redirectFromUserToMain ()
-    {
+    @RequestMapping(value = "/userAccept/**", method = RequestMethod.GET)
+    public String redirectFromUserToMain() {
         return "redirect:/main";
     }
 
     @RequestMapping(value = "/userAccept/{userId}", method = RequestMethod.POST)
-    public String acceptInvitation (@PathVariable("userId") Long userId, HttpSession session, Principal principal)
-    {
+    public String acceptInvitation(@PathVariable("userId") Long userId, HttpSession session, Principal principal) {
         User userDeciding = userService.getLoggedDbUser(session, principal);
         User userWanting = userRepository.getOne(userId);
         userDeciding.addToFriends(userWanting);
@@ -81,6 +73,42 @@ public class UserController
         userWanting.removeFromWantedByUser(userDeciding);
         userRepository.save(userDeciding);
         userRepository.save(userWanting);
+        return "redirect:/user/" + userId;
+    }
+
+    @RequestMapping(value = "/userDecline/**", method = RequestMethod.GET)
+    public String redirectFromDeclineToMain()
+    {
+        return "redirect:/main";
+    }
+
+    @RequestMapping(value = "/userDecline/{userId}", method = RequestMethod.POST)
+    public String declineInvitation (@PathVariable("userId") Long userId, HttpSession session, Principal principal)
+    {
+        User userDeciding = userService.getLoggedDbUser(session, principal);
+        User userWanting = userRepository.getOne(userId);
+        userDeciding.removerFromUserIsWanted(userWanting);
+        userWanting.removeFromWantedByUser(userDeciding);
+        userRepository.save(userDeciding);
+        userRepository.save(userWanting);
+        return "redirect:/user/" + userId;
+    }
+
+    @RequestMapping(value = "userRemoveFromFriends/**", method = RequestMethod.GET)
+    public String redirectFromRemoveToMain()
+    {
+        return "redirect:/main";
+    }
+
+    @RequestMapping(value = "userRemoveFromFriends/{userId}", method = RequestMethod.POST)
+    public String removeFromFriends(@PathVariable("userId") Long userId, HttpSession session, Principal principal)
+    {
+        User userDeciding = userService.getLoggedDbUser(session, principal);
+        User userBeingRemoved = userRepository.getOne(userId);
+        userDeciding.removeFromFriends(userBeingRemoved);
+        userBeingRemoved.removeFromFriends(userDeciding);
+        userRepository.save(userDeciding);
+        userRepository.save(userBeingRemoved);
         return "redirect:/user/" + userId;
     }
 }
