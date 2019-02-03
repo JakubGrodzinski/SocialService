@@ -1,5 +1,8 @@
 package com.kuba.demo.Model;
 
+import com.kuba.demo.Validator.NoSuchNameInDb;
+import com.kuba.demo.ValidatorGroup.RegistrationValidatorGroup;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,7 +17,7 @@ public class User
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
     private Long id;
-    @Column(unique = true)
+    @NoSuchNameInDb(groups = RegistrationValidatorGroup.class)
     private String username;
     private String password;
 
