@@ -10,6 +10,7 @@
     <label>Username <input type="text" th:field="*{username}"></label><br/>
     <p th:if="${#fields.hasErrors()}" th:errors="*{username}">Error</p>
     <label>Password <input type="password" th:field="*{password}"></label><br/>
+    <p th:if="${#fields.hasErrors()}" th:errors="*{password}">Error</p>
     <input type="submit" value="Sign In">
 </form>
 </body>

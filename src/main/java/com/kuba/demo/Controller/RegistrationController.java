@@ -31,7 +31,6 @@ public class RegistrationController
     {
         if(bindingResult.hasErrors())
         {
-            System.out.println("SA BLEDY!!!!!!!!!!!!!!!!!!!!!");
             return "registration";
         }
         userService.saveUser(user);

@@ -1,6 +1,7 @@
 package com.kuba.demo.Model;
 
 import com.kuba.demo.Validator.NoSuchNameInDb;
+import com.kuba.demo.Validator.ValidPassword;
 import com.kuba.demo.ValidatorGroup.RegistrationValidatorGroup;
 
 import javax.persistence.*;
@@ -19,6 +20,7 @@ public class User
     private Long id;
     @NoSuchNameInDb(groups = RegistrationValidatorGroup.class)
     private String username;
+    @ValidPassword(groups = RegistrationValidatorGroup.class)
     private String password;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
