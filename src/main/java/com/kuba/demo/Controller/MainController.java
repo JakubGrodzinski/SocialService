@@ -73,6 +73,24 @@ public class MainController
         return "redirect:/main";
     }
 
+    @RequestMapping(value = "/like/**", method = RequestMethod.GET)
+    public String redirectFromLike ()
+    {
+        return "redirect:/main";
+    }
+
+    @RequestMapping(value = "/like/{postId}", method = RequestMethod.POST)
+    public String likeAPost(@PathVariable("postId") Long postId, HttpSession session, Principal principal)
+    {
+        Post post = postRepository.getOne(postId);
+        User user = userService.getLoggedDbUser(session, principal);
+        post.addToUsersWhoLike(user);
+        user.addToPostsLikedByUser(post);
+        postRepository.save(post);
+        userRepository.save(user);
+        return "redirect:/main";
+    }
+
 
 
     @ModelAttribute("posts")

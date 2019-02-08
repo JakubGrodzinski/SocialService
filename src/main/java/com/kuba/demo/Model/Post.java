@@ -1,8 +1,10 @@
 package com.kuba.demo.Model;
 
+import javax.jws.soap.SOAPBinding;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 @Entity
@@ -18,7 +20,7 @@ public class Post
     private Date creationDate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
     private List<Comment> comments= new ArrayList<>();
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "postsLikedByUser")
     private List<User> usersWhoLike = new ArrayList<>();
 
     @ManyToOne
@@ -65,6 +67,23 @@ public class Post
         this.usersWhoLike = usersWhoLike;
     }
 
+    public void addToUsersWhoLike (User user)
+    {
+        this.usersWhoLike.add(user);
+    }
+
+    public void removeFromUsersWhoLike (User user)
+    {
+        Iterator<User> userIterator = this.usersWhoLike.iterator();
+        while (userIterator.hasNext())
+        {
+            User tmpUser = userIterator.next();
+            if(tmpUser.getId().equals(user.getId()))
+            {
+                userIterator.remove();
+            }
+        }
+    }
 
     public User getUserCreator() {
         return userCreator;

@@ -26,6 +26,10 @@
         <a th:text="${post.userCreator.username}" th:href="@{'/user/' + ${post.userCreator.id}}"></a>
         <h4 th:text="${#dates.format(post.creationDate, 'dd MMMM yyyy HH:mm')}"></h4>
         <p th:text="${post.text}"></p>
+        <form th:unless="${currentUser.postsLikedByUser.contains(post)}" th:action="@{'/like/' + ${post.id}}" method="post">
+            <input type="submit" value="Like the post!"/>
+        </form>
+        <p th:if="${currentUser.postsLikedByUser.contains(post)}">You like this post</p>
         <div th:each="comment : ${post.comments}">
             <a th:text="${comment.creatorUser.username}" th:href="@{'/user/' + ${comment.creatorUser.id}}"></a>
             <h6 th:text="${#dates.format(comment.creationDate, 'dd MMMM yyyy HH:mm')}"></h6>
