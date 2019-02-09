@@ -45,6 +45,9 @@ public class User
     //Posty, które lubi użytkownik
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Post> postsLikedByUser = new ArrayList<>();
+    //Komentarze, które lubi użytkownik
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Comment> commentsLikedByUser = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -202,6 +205,32 @@ public class User
             if(tmpPost.getId().equals(post.getId()))
             {
                 postIterator.remove();
+            }
+        }
+    }
+
+    public List<Comment> getCommentsLikedByUser() {
+        return commentsLikedByUser;
+    }
+
+    public void setCommentsLikedByUser(List<Comment> commentsLikedByUser) {
+        this.commentsLikedByUser = commentsLikedByUser;
+    }
+
+    public void addToCommentsLikedByUser (Comment comment)
+    {
+        this.commentsLikedByUser.add(comment);
+    }
+
+    public void removeFromCommentsLikedByUser (Comment comment)
+    {
+        Iterator<Comment> commentIterator = this.commentsLikedByUser.iterator();
+        while (commentIterator.hasNext())
+        {
+            Comment tmpComment = commentIterator.next();
+            if(tmpComment.getId().equals(comment.getId()))
+            {
+                commentIterator.remove();
             }
         }
     }

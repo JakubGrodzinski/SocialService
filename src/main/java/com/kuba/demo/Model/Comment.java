@@ -3,6 +3,7 @@ package com.kuba.demo.Model;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 @Entity
@@ -16,14 +17,15 @@ public class Comment
     private String text;
 
     private Date creationDate;
-    @ManyToMany(cascade = CascadeType.ALL)
-    private List<User> usersWhoLike = new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Post post;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private User creatorUser;
+
+    @ManyToMany(mappedBy = "commentsLikedByUser")
+    private  List<User> usersWhoLikeComment = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -49,14 +51,6 @@ public class Comment
         this.creationDate = creationDate;
     }
 
-    public List<User> getUsersWhoLike() {
-        return usersWhoLike;
-    }
-
-    public void setUsersWhoLike(List<User> usersWhoLike) {
-        this.usersWhoLike = usersWhoLike;
-    }
-
     public Post getPost() {
         return post;
     }
@@ -73,5 +67,33 @@ public class Comment
     public void setCreatorUser(User creatorUser)
     {
         this.creatorUser = creatorUser;
+    }
+
+    public List<User> getUsersWhoLikeComment()
+    {
+        return usersWhoLikeComment;
+    }
+
+    public void setUsersWhoLikeComment(List<User> usersWhoLikeComment)
+    {
+        this.usersWhoLikeComment = usersWhoLikeComment;
+    }
+
+    public void addToUsersWhoLikeComment (User user)
+    {
+        this.usersWhoLikeComment.add(user);
+    }
+
+    public void removeFromUsersWhoLikeComment (User user)
+    {
+        Iterator<User> userIterator = this.usersWhoLikeComment.iterator();
+        while (userIterator.hasNext())
+        {
+            User tmpUser = userIterator.next();
+            if(tmpUser.getId().equals(user.getId()))
+            {
+                userIterator.remove();
+            }
+        }
     }
 }

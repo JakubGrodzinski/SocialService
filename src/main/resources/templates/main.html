@@ -15,7 +15,7 @@
 
 <a th:href="@{/main/search}">Search for User</a>
 
-    <p th:text="Hello +' '+${currentUser.getUsername()}">
+    <p th:text="Hello +' '+${currentUser.username}">
 
     <form th:action="@{/main}" th:object="${newPost}" method="post">
         <label><input type="text" th:field="*{text}" placeholder="Write what you think..."/></label>
@@ -30,10 +30,17 @@
             <input type="submit" value="Like the post!"/>
         </form>
         <p th:if="${currentUser.postsLikedByUser.contains(post)}">You like this post</p>
+        <form th:if="${currentUser.postsLikedByUser.contains(post)}" th:action="@{'/unlike/' + ${post.id}}" method="post">
+            <input type="submit" value="Unlike"/>
+        </form>
         <div th:each="comment : ${post.comments}">
             <a th:text="${comment.creatorUser.username}" th:href="@{'/user/' + ${comment.creatorUser.id}}"></a>
             <h6 th:text="${#dates.format(comment.creationDate, 'dd MMMM yyyy HH:mm')}"></h6>
             <p th:text="${comment.text}"></p>
+            <form th:if="${currentUser.commentsLikedByUser.contains(comment)}" th:action="@{'/likeAComment/' + ${comment.id}}" method="post">
+                <input type="submit" value="Like the comment!"/>
+            </form>
+            <>
         </div>
         <form th:action="@{'/mai/' + ${post.id}}" th:object="${newComment}" method="post">
             <input type="text" th:field="*{text}" placeholder="Comment"/>

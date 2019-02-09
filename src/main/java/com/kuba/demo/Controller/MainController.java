@@ -91,7 +91,41 @@ public class MainController
         return "redirect:/main";
     }
 
+    @RequestMapping(value = "/unlike/**", method = RequestMethod.GET)
+    public String redirectFromUnlike ()
+    {
+        return "redirect:/main";
+    }
 
+    @RequestMapping(value = "/unlike/{postId}", method = RequestMethod.POST)
+    public String unlikeAPost (@PathVariable("postId") Long postId, HttpSession session, Principal principal)
+    {
+        Post post = postRepository.getOne(postId);
+        User user = userService.getLoggedDbUser(session, principal);
+        post.removeFromUsersWhoLike(user);
+        user.removeFromPostsLikedByUser(post);
+        postRepository.save(post);
+        userRepository.save(user);
+        return "redirect:/main";
+    }
+
+    @RequestMapping(value = "/likeAComment/**", method = RequestMethod.GET)
+    public String redirectFromLikeAComment ()
+    {
+        return "redirect:/main";
+    }
+
+    @RequestMapping(value = "/likeAComment/{commentId}", method = RequestMethod.POST)
+    public String likeAComment (@PathVariable("commentId") Long commentId, HttpSession session, Principal principal)
+    {
+        Comment comment = commentRepository.getOne(commentId);
+        User user = userService.getLoggedDbUser(session, principal);
+        comment.addToUsersWhoLikeComment(user);
+        user.addToCommentsLikedByUser(comment);
+        commentRepository.save(comment);
+        userRepository.save(user);
+        return "redirect:/main";
+    }
 
     @ModelAttribute("posts")
     public List<Post> getAllPosts ()
