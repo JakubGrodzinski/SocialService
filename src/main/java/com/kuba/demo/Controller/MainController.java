@@ -127,6 +127,24 @@ public class MainController
         return "redirect:/main";
     }
 
+    @RequestMapping(value = "/unlikeAComment/**", method = RequestMethod.GET)
+    public String redirectFromUnlikeAComment ()
+    {
+        return "redirect:/main";
+    }
+
+    @RequestMapping(value = "/unlikeAComment/{commentId}", method = RequestMethod.POST)
+    public String unlikeAComment (@PathVariable("commentId") Long commentId, HttpSession session, Principal principal)
+    {
+        Comment comment = commentRepository.getOne(commentId);
+        User user = userService.getLoggedDbUser(session, principal);
+        comment.removeFromUsersWhoLikeComment(user);
+        user.removeFromCommentsLikedByUser(comment);
+        commentRepository.save(comment);
+        userRepository.save(user);
+        return "redirect:/main";
+    }
+
     @ModelAttribute("posts")
     public List<Post> getAllPosts ()
     {

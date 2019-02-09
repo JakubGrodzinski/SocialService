@@ -26,6 +26,7 @@
         <a th:text="${post.userCreator.username}" th:href="@{'/user/' + ${post.userCreator.id}}"></a>
         <h4 th:text="${#dates.format(post.creationDate, 'dd MMMM yyyy HH:mm')}"></h4>
         <p th:text="${post.text}"></p>
+        <p th:text="|Likes: ${post.usersWhoLike.size()}|"></p>
         <form th:unless="${currentUser.postsLikedByUser.contains(post)}" th:action="@{'/like/' + ${post.id}}" method="post">
             <input type="submit" value="Like the post!"/>
         </form>
@@ -37,10 +38,13 @@
             <a th:text="${comment.creatorUser.username}" th:href="@{'/user/' + ${comment.creatorUser.id}}"></a>
             <h6 th:text="${#dates.format(comment.creationDate, 'dd MMMM yyyy HH:mm')}"></h6>
             <p th:text="${comment.text}"></p>
-            <form th:if="${currentUser.commentsLikedByUser.contains(comment)}" th:action="@{'/likeAComment/' + ${comment.id}}" method="post">
+            <p th:text="|Likes: ${comment.usersWhoLikeComment.size()}|"></p>
+            <form th:unless="${currentUser.commentsLikedByUser.contains(comment)}" th:action="@{'/likeAComment/' + ${comment.id}}" method="post">
                 <input type="submit" value="Like the comment!"/>
             </form>
-            <>
+            <form th:if="${currentUser.commentsLikedByUser.contains(comment)}" th:action="@{'/unlikeAComment/' + ${comment.id}}" method="post">
+                <input type="submit" value="Unlike"/>
+            </form>
         </div>
         <form th:action="@{'/mai/' + ${post.id}}" th:object="${newComment}" method="post">
             <input type="text" th:field="*{text}" placeholder="Comment"/>
