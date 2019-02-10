@@ -21,4 +21,6 @@ public interface UserService
     void declineInvitationService (User userDeciding, User userWanting);
 
     void removeFromFriendsService (User userDeciding, User userBeingRemoved);
+
+    void suggestFriends ();
 }

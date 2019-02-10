@@ -17,6 +17,11 @@
 
     <p th:text="Hello +' '+${currentUser.username}">
 
+    <p>Suggested friends:</p>
+    <div th:each="suggestedUser : ${currentUser.suggestedFriends}">
+        <p th:text="${suggestedUser.username}"></p>
+    </div>
+
     <form th:action="@{/main}" th:object="${newPost}" method="post">
         <label><input type="text" th:field="*{text}" placeholder="Write what you think..."/></label>
         <input type="submit" value="Post!"/>

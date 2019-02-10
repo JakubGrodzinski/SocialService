@@ -5,10 +5,7 @@ import com.kuba.demo.Validator.ValidPassword;
 import com.kuba.demo.ValidatorGroup.RegistrationValidatorGroup;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -31,7 +28,7 @@ public class User
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userCreator")
     private List<Post> posts = new ArrayList<>();
     //Znajomi użytkownika
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<User> friends = new ArrayList<>();
     //Komentarze użytkownika
     @OneToMany(cascade = CascadeType.ALL)
@@ -48,6 +45,9 @@ public class User
     //Komentarze, które lubi użytkownik
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Comment> commentsLikedByUser = new ArrayList<>();
+    //Użytkownicy sugerowani przez aplikację
+    @ManyToMany(cascade = CascadeType.ALL)
+    private Set<User> suggestedFriends = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -159,7 +159,7 @@ public class User
     {
         this.userIsWanted.add(user);
     }
-    public void removerFromUserIsWanted (User user)
+    public void removeFromUserIsWanted (User user)
     {
         Iterator<User> userIterator = this.userIsWanted.iterator();
         while (userIterator.hasNext())
@@ -233,5 +233,13 @@ public class User
                 commentIterator.remove();
             }
         }
+    }
+
+    public Set<User> getSuggestedFriends() {
+        return suggestedFriends;
+    }
+
+    public void setSuggestedFriends(Set<User> suggestedFriends) {
+        this.suggestedFriends = suggestedFriends;
     }
 }

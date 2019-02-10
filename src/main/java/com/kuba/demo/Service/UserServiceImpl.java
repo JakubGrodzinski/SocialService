@@ -5,6 +5,7 @@ import com.kuba.demo.Model.User;
 import com.kuba.demo.Repository.RoleRepository;
 import com.kuba.demo.Repository.UserRepository;
 import org.springframework.context.annotation.Primary;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,9 @@ import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Service
 @Primary
 public class UserServiceImpl implements UserService
@@ -66,7 +70,7 @@ public class UserServiceImpl implements UserService
     public void acceptInvitationService(User userDeciding, User userWanting)
     {
         userDeciding.addToFriends(userWanting);
-        userDeciding.removerFromUserIsWanted(userWanting);
+        userDeciding.removeFromUserIsWanted(userWanting);
         userWanting.addToFriends(userDeciding);
         userWanting.removeFromWantedByUser(userDeciding);
         userRepository.save(userDeciding);
@@ -76,7 +80,7 @@ public class UserServiceImpl implements UserService
     @Override
     public void declineInvitationService(User userDeciding, User userWanting)
     {
-        userDeciding.removerFromUserIsWanted(userWanting);
+        userDeciding.removeFromUserIsWanted(userWanting);
         userWanting.removeFromWantedByUser(userDeciding);
         userRepository.save(userDeciding);
         userRepository.save(userWanting);
@@ -89,5 +93,28 @@ public class UserServiceImpl implements UserService
         userBeingRemoved.removeFromFriends(userDeciding);
         userRepository.save(userDeciding);
         userRepository.save(userBeingRemoved);
+    }
+
+    @Scheduled(cron = "0 * * ? * *")
+    public void suggestFriends ()
+    {
+
+        List<User> allUsers = userRepository.findAll();
+        for (User user: allUsers)
+        {
+            Set<User> userSet = new HashSet<>();
+            for(User user1: user.getFriends())
+            {
+                for(User user2: user1.getFriends())
+                {
+                    if((!user2.equals(user)) && (!user.getFriends().contains(user2)))
+                    {
+                        userSet.add(user2);
+                    }
+                }
+            }
+            user.setSuggestedFriends(userSet);
+            userRepository.save(user);
+        }
     }
 }
