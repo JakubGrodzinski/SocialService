@@ -253,5 +253,5 @@ public class User
     public void setSentMessages(Set<Message> sentMessages) {
         this.sentMessages = sentMessages;
     }
-    
+
 }

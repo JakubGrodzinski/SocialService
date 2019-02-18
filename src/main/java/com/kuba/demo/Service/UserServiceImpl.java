@@ -1,7 +1,9 @@
 package com.kuba.demo.Service;
 
+import com.kuba.demo.Model.Conversation;
 import com.kuba.demo.Model.Role;
 import com.kuba.demo.Model.User;
+import com.kuba.demo.Repository.ConversationRepository;
 import com.kuba.demo.Repository.RoleRepository;
 import com.kuba.demo.Repository.UserRepository;
 import org.springframework.context.annotation.Primary;
@@ -22,12 +24,14 @@ public class UserServiceImpl implements UserService
 {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final ConversationRepository conversationRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder)
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, ConversationRepository conversationRepository, BCryptPasswordEncoder passwordEncoder)
     {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.conversationRepository = conversationRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -69,12 +73,16 @@ public class UserServiceImpl implements UserService
     @Override
     public void acceptInvitationService(User userDeciding, User userWanting)
     {
+        Conversation conversation = new Conversation();
+        conversation.setUser1(userDeciding);
+        conversation.setUser2(userWanting);
         userDeciding.addToFriends(userWanting);
         userDeciding.removeFromUserIsWanted(userWanting);
         userWanting.addToFriends(userDeciding);
         userWanting.removeFromWantedByUser(userDeciding);
         userRepository.save(userDeciding);
         userRepository.save(userWanting);
+        conversationRepository.save(conversation);
     }
 
     @Override

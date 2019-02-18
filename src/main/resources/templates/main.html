@@ -80,9 +80,20 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        adadada
+                        <div th:each="conversation : ${conversations}">
+                            <div th:if="${conversation.user1.id.equals(friend.id)} or ${conversation.user2.id.equals(friend.id)}">
+                                <div th:each="message : ${conversation.messages}">
+                                    <p th:text="${message.text}"></p>
+                                    <h6 th:text="${message.userCreator.username}"></h6>
+                                    <h6 th:text="${#dates.format(message.creationDate, 'dd MMMM yyyy HH:mm')}"></h6>
+                                </div>
+                                <form th:object="newMessage" th:action="@{'/sendAMessage/' + ${friend.id} + '/' + ${conversation.id}}" method="post">
+                                </form>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
+
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>

@@ -1,15 +1,14 @@
 package com.kuba.demo.Controller;
 
-import com.kuba.demo.Model.Comment;
-import com.kuba.demo.Model.CurrentUser;
-import com.kuba.demo.Model.Post;
-import com.kuba.demo.Model.User;
+import com.kuba.demo.Model.*;
 import com.kuba.demo.Repository.CommentRepository;
+import com.kuba.demo.Repository.ConversationRepository;
 import com.kuba.demo.Repository.PostRepository;
 import com.kuba.demo.Repository.UserRepository;
 import com.kuba.demo.Service.MyUserDetailsService;
 import com.kuba.demo.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +33,8 @@ public class MainController
     CommentRepository commentRepository;
     @Autowired
     UserService userService;
+    @Autowired
+    ConversationRepository conversationRepository;
 
 
     @RequestMapping(value = "/main", method = RequestMethod.GET)
@@ -41,11 +42,13 @@ public class MainController
     {
         Post post = new Post();
         Comment comment = new Comment();
+        Message message = new Message();
         String name = principal.getName();
         User user = userRepository.findByUsername(name);
         model.addAttribute("newPost", post);
         model.addAttribute("currentUser", user);
         model.addAttribute("newComment", comment);
+        model.addAttribute("newMessage", message);
         return "main";
     }
     @RequestMapping(value = "/main", method = RequestMethod.POST)
@@ -150,6 +153,13 @@ public class MainController
     {
         List<Post> posts = postRepository.getOrderedPosts();
         return posts;
+    }
+
+    @ModelAttribute("conversations")
+    public List<Conversation> getConversationsOfTheCurrentUser (HttpSession session, Principal principal)
+    {
+        User user = userService.getLoggedDbUser(session, principal);
+        return conversationRepository.getIfInvolvesUser(user);
     }
 
 

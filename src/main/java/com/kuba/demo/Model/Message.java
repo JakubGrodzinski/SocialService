@@ -17,6 +17,8 @@ public class Message
     @ManyToOne
     private Conversation conversation;
 
+    private String text;
+
     public Long getId() {
         return id;
     }
@@ -47,5 +49,15 @@ public class Message
 
     public void setConversation(Conversation conversation) {
         this.conversation = conversation;
+    }
+
+    public String getText()
+    {
+        return text;
+    }
+
+    public void setText(String text)
+    {
+        this.text = text;
     }
 }
