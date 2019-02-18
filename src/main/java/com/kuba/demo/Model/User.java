@@ -48,6 +48,9 @@ public class User
     //Użytkownicy sugerowani przez aplikację
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<User> suggestedFriends = new HashSet<>();
+    //Wysłane wiadomości
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userCreator")
+    private Set<Message> sentMessages = new HashSet<>();
 
     public Long getId() {
         return id;
