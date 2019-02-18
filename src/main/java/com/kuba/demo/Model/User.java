@@ -245,4 +245,13 @@ public class User
     public void setSuggestedFriends(Set<User> suggestedFriends) {
         this.suggestedFriends = suggestedFriends;
     }
+
+    public Set<Message> getSentMessages() {
+        return sentMessages;
+    }
+
+    public void setSentMessages(Set<Message> sentMessages) {
+        this.sentMessages = sentMessages;
+    }
+    
 }
