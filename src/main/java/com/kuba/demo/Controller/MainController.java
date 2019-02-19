@@ -1,10 +1,7 @@
 package com.kuba.demo.Controller;
 
 import com.kuba.demo.Model.*;
-import com.kuba.demo.Repository.CommentRepository;
-import com.kuba.demo.Repository.ConversationRepository;
-import com.kuba.demo.Repository.PostRepository;
-import com.kuba.demo.Repository.UserRepository;
+import com.kuba.demo.Repository.*;
 import com.kuba.demo.Service.MyUserDetailsService;
 import com.kuba.demo.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +32,8 @@ public class MainController
     UserService userService;
     @Autowired
     ConversationRepository conversationRepository;
+    @Autowired
+    MessageRepository messageRepository;
 
 
     @RequestMapping(value = "/main", method = RequestMethod.GET)
@@ -145,6 +144,25 @@ public class MainController
         user.removeFromCommentsLikedByUser(comment);
         commentRepository.save(comment);
         userRepository.save(user);
+        return "redirect:/main";
+    }
+
+    @RequestMapping(value = "/sendAMessage/**", method = RequestMethod.GET)
+    public String redirectFromSendAMessage ()
+    {
+        return "redirect:/main";
+    }
+
+    @RequestMapping(value = "/sendAMessage/{friendId}/{conversationId}", method = RequestMethod.POST)
+    public String sendAMessage (@ModelAttribute("newMessage") Message message, @PathVariable("friendId") Long friendId, @PathVariable("conversationId") Long conversationId, HttpSession session, Principal principal)
+    {
+        User friend = userRepository.getOne(friendId);
+        User user = userService.getLoggedDbUser(session, principal);
+        Conversation conversation = conversationRepository.getOne(conversationId);
+        message.setCreationDate(new Date());
+        message.setConversation(conversation);
+        message.setUserCreator(user);
+        messageRepository.save(message);
         return "redirect:/main";
     }
 

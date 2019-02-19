@@ -1,7 +1,9 @@
 package com.kuba.demo.Model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -15,8 +17,8 @@ public class Conversation
     private User user1;
     @ManyToOne
     private User user2;
-    @OneToMany
-    private Set<Message> messages = new HashSet<>();
+    @OneToMany (mappedBy = "conversation")
+    private List<Message> messages = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -42,11 +44,11 @@ public class Conversation
         this.user2 = user2;
     }
 
-    public Set<Message> getMessages() {
+    public List<Message> getMessages() {
         return messages;
     }
 
-    public void setMessages(Set<Message> messages) {
+    public void setMessages(List<Message> messages) {
         this.messages = messages;
     }
 }

@@ -12,9 +12,9 @@ public class Message
     private Long id;
 
     private Date creationDate;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User userCreator;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Conversation conversation;
 
     private String text;
@@ -60,4 +60,5 @@ public class Message
     {
         this.text = text;
     }
+
 }

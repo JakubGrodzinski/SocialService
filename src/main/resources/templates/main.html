@@ -87,7 +87,9 @@
                                     <h6 th:text="${message.userCreator.username}"></h6>
                                     <h6 th:text="${#dates.format(message.creationDate, 'dd MMMM yyyy HH:mm')}"></h6>
                                 </div>
-                                <form th:object="newMessage" th:action="@{'/sendAMessage/' + ${friend.id} + '/' + ${conversation.id}}" method="post">
+                                <form th:object="${newMessage}" th:action="@{'/sendAMessage/' + ${friend.id} + '/' + ${conversation.id}}" method="post">
+                                    <input type="text" th:field="*{text}"/>
+                                    <input type="submit" value="Send a message"/>
                                 </form>
                             </div>
                         </div>
