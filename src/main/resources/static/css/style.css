@@ -1,7 +1,20 @@
+
 .post
 {
     border: 1px darkturquoise solid;
     width: 300px;
     max-width: 100%;
     border-radius: 4%;
+}
+.indexjumb
+{
+    width: 900px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+.indexlink
+{
+    margin: 20px;
 }
