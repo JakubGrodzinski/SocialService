@@ -41,41 +41,48 @@
     <div th:each="suggestedUser : ${currentUser.suggestedFriends}">
         <p th:text="${suggestedUser.username}"></p>
     </div>
-
-    <form th:action="@{/main}" th:object="${newPost}" method="post">
-        <label><input type="text" th:field="*{text}" placeholder="Write what you think..."/></label>
-        <input type="submit" value="Post!"/>
-    </form>
-
-    <div th:each="post : ${posts}" class="post">
-        <a th:text="${post.userCreator.username}" th:href="@{'/user/' + ${post.userCreator.id}}"></a>
-        <h4 th:text="${#dates.format(post.creationDate, 'dd MMMM yyyy HH:mm')}"></h4>
-        <p th:text="${post.text}"></p>
-        <p th:text="|Likes: ${post.usersWhoLike.size()}|"></p>
-        <form th:unless="${currentUser.postsLikedByUser.contains(post)}" th:action="@{'/like/' + ${post.id}}" method="post">
-            <input type="submit" value="Like the post!"/>
+    <div class="row">
+        <div class="col-lg-9">
+        <form th:action="@{/main}" th:object="${newPost}" method="post">
+            <label><input type="text" th:field="*{text}" placeholder="Write what you think..."/></label>
+            <input type="submit" value="Post!"/>
         </form>
-        <p th:if="${currentUser.postsLikedByUser.contains(post)}">You like this post</p>
-        <form th:if="${currentUser.postsLikedByUser.contains(post)}" th:action="@{'/unlike/' + ${post.id}}" method="post">
-            <input type="submit" value="Unlike"/>
-        </form>
-        <div th:each="comment : ${post.comments}">
-            <a th:text="${comment.creatorUser.username}" th:href="@{'/user/' + ${comment.creatorUser.id}}"></a>
-            <h6 th:text="${#dates.format(comment.creationDate, 'dd MMMM yyyy HH:mm')}"></h6>
-            <p th:text="${comment.text}"></p>
-            <p th:text="|Likes: ${comment.usersWhoLikeComment.size()}|"></p>
-            <form th:unless="${currentUser.commentsLikedByUser.contains(comment)}" th:action="@{'/likeAComment/' + ${comment.id}}" method="post">
-                <input type="submit" value="Like the comment!"/>
+
+        <div th:each="post : ${posts}" class="post">
+            <a th:text="${post.userCreator.username}" th:href="@{'/user/' + ${post.userCreator.id}}"></a>
+            <h4 th:text="${#dates.format(post.creationDate, 'dd MMMM yyyy HH:mm')}"></h4>
+            <p th:text="${post.text}"></p>
+            <p th:text="|Likes: ${post.usersWhoLike.size()}|"></p>
+            <form th:unless="${currentUser.postsLikedByUser.contains(post)}" th:action="@{'/like/' + ${post.id}}" method="post">
+                <input type="submit" value="Like the post!"/>
             </form>
-            <form th:if="${currentUser.commentsLikedByUser.contains(comment)}" th:action="@{'/unlikeAComment/' + ${comment.id}}" method="post">
+            <p th:if="${currentUser.postsLikedByUser.contains(post)}">You like this post</p>
+            <form th:if="${currentUser.postsLikedByUser.contains(post)}" th:action="@{'/unlike/' + ${post.id}}" method="post">
                 <input type="submit" value="Unlike"/>
             </form>
+            <div th:each="comment : ${post.comments}">
+                <a th:text="${comment.creatorUser.username}" th:href="@{'/user/' + ${comment.creatorUser.id}}"></a>
+                <h6 th:text="${#dates.format(comment.creationDate, 'dd MMMM yyyy HH:mm')}"></h6>
+                <p th:text="${comment.text}"></p>
+                <p th:text="|Likes: ${comment.usersWhoLikeComment.size()}|"></p>
+                <form th:unless="${currentUser.commentsLikedByUser.contains(comment)}" th:action="@{'/likeAComment/' + ${comment.id}}" method="post">
+                    <input type="submit" value="Like the comment!"/>
+                </form>
+                <form th:if="${currentUser.commentsLikedByUser.contains(comment)}" th:action="@{'/unlikeAComment/' + ${comment.id}}" method="post">
+                    <input type="submit" value="Unlike"/>
+                </form>
+            </div>
+            <form th:action="@{'/mai/' + ${post.id}}" th:object="${newComment}" method="post">
+                <input type="text" th:field="*{text}" placeholder="Comment"/>
+                <input type="submit" value="Comment!">
+            </form>
         </div>
-        <form th:action="@{'/mai/' + ${post.id}}" th:object="${newComment}" method="post">
-            <input type="text" th:field="*{text}" placeholder="Comment"/>
-            <input type="submit" value="Comment!">
-        </form>
-    </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+
 
     <div th:each="friend : ${currentUser.friends}" class="jumbotron">
         <button type="button" class="btn btn-dark btn-lg" data-toggle="modal" th:attr="data-target='#modal' + ${friend.id}" th:text="${friend.username}"></button>
@@ -111,6 +118,8 @@
 
             </div>
         </div>
+    </div>
+    </div>
     </div>
 </body>
 </html>
