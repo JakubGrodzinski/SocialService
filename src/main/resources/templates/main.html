@@ -37,7 +37,7 @@
             </ul>
         </nav>
 
-    <p>Suggested friends:</p>
+    <p>People you may know:</p>
     <div th:each="suggestedUser : ${currentUser.suggestedFriends}">
         <p th:text="${suggestedUser.username}"></p>
     </div>
