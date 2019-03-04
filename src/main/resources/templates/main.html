@@ -75,6 +75,13 @@
                         <a th:text="${respo.creatorUser.username}" th:href="@{'/user/' +${respo.creatorUser.id}}"></a>
                         <h6 th:text="${#dates.format(respo.creationDate, 'dd MMMM yyyy HH:mm')}"></h6>
                         <p th:text="${respo.text}"></p>
+                        <p th:text="|Likes: ${respo.usersWhoLikeComment.size()}|"></p>
+                        <form th:unless="${currentUser.commentsLikedByUser.contains(respo)}" th:action="@{'/likeAComment/' + ${respo.id}}" method="post">
+                            <input type="submit" value="Like the comment!"/>
+                        </form>
+                        <form th:if="${currentUser.commentsLikedByUser.contains(respo)}" th:action="@{'/unlikeAComment/' + ${respo.id}}" method="post">
+                            <input type="submit" value="Unlike"/>
+                        </form>
                     </div>
                         <form th:action="@{'/reply/' + ${comment.id}}" th:object="${newComment}" method="post">
                             <input type="text" th:field="*{text}" placeholder="Reply!"/>
