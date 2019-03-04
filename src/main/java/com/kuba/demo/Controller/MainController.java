@@ -166,6 +166,25 @@ public class MainController
         return "redirect:/main";
     }
 
+    @RequestMapping(value = "/reply/{commentId}", method = RequestMethod.GET)
+    public String redirectFromReply ()
+    {
+        return "redirect:/main";
+    }
+
+    @RequestMapping(value = "/reply/{commentId}", method = RequestMethod.POST)
+    public String reply (@ModelAttribute("newComment") Comment comment, @PathVariable("commentId") Long commentId, HttpSession session, Principal principal)
+    {
+        User user = userService.getLoggedDbUser(session, principal);
+        Comment primaryComment = commentRepository.getOne(commentId);
+        primaryComment.addToResponseComments(comment);
+        comment.setCreationDate(new Date());
+        comment.setCreatorUser(user);
+        commentRepository.save(comment);
+        commentRepository.save(primaryComment);
+        return "redirect:/main";
+    }
+
     @ModelAttribute("posts")
     public List<Post> getAllPosts ()
     {

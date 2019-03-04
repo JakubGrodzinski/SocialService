@@ -27,6 +27,11 @@ public class Comment
     @ManyToMany(mappedBy = "commentsLikedByUser")
     private  List<User> usersWhoLikeComment = new ArrayList<>();
 
+
+    @OneToMany
+    private List<Comment> responseComments = new ArrayList<>();
+
+
     public Long getId() {
         return id;
     }
@@ -95,5 +100,20 @@ public class Comment
                 userIterator.remove();
             }
         }
+    }
+
+
+
+    public List<Comment> getResponseComments() {
+        return responseComments;
+    }
+
+    public void setResponseComments(List<Comment> responseComments) {
+        this.responseComments = responseComments;
+    }
+
+    public void addToResponseComments (Comment comment)
+    {
+        this.responseComments.add(comment);
     }
 }
